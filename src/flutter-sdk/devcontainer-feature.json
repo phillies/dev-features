@@ -1,6 +1,6 @@
 {
     "name": "Flutter SDK",
-    "id": "flutter",
+    "id": "flutter-sdk",
     "version": "1.0.0",
     "description": "The flutter and dart sdk.",
     "options": {
