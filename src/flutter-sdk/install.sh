@@ -55,7 +55,9 @@ check_packages git
 
 
 # Installing flutter into /opt
-mkdir /opt
+if [ ! -d "/opt/" ]; then
+    mkdir /opt
+fi
 cd /opt
 chmod a+rwX /opt
 
