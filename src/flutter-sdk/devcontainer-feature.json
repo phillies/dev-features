@@ -1,0 +1,16 @@
+{
+    "name": "Flutter SDK",
+    "id": "flutter",
+    "version": "1.0.0",
+    "description": "The flutter and dart sdk.",
+    "options": {
+        "channel": {
+            "type": "string",
+            "default": "stable",
+            "description": "The flutter release channel, e.g. stable or beta."
+        }
+    },
+    "installsAfter": [
+        "ghcr.io/devcontainers/features/common-utils"
+    ]
+}
