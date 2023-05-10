@@ -50,8 +50,8 @@ check_packages() {
 # Ensure apt is in non-interactive to avoid prompts
 export DEBIAN_FRONTEND=noninteractive
 
-# Install git
-check_packages git ca-certificates
+# Install flutter dependencies
+check_packages git ca-certificates curl libglu1-mesa zip unzip xz-utils
 
 
 # Installing flutter into /opt
