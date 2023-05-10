@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Checking if remote user is set, otherwise use "automatic" user
 USERNAME="${USERNAME:-"${_REMOTE_USER:-"automatic"}"}"
