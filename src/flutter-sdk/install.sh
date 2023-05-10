@@ -51,7 +51,7 @@ check_packages() {
 export DEBIAN_FRONTEND=noninteractive
 
 # Install git
-check_packages git
+check_packages git ca-certificates
 
 
 # Installing flutter into /opt
