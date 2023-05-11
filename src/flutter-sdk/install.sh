@@ -2,6 +2,7 @@
 
 # Checking if remote user is set, otherwise use "automatic" user
 USERNAME="${USERNAME:-"${_REMOTE_USER:-"automatic"}"}"
+UPDATE_RC="true"
 
 set -e
 
