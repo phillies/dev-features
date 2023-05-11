@@ -6,8 +6,8 @@ UPDATE_RC="true"
 
 set -e
 
-echo "Activating feature 'flutter-sdk'"
-echo "The chosen flutter SDK channel is: ${CHANNEL}"
+echo "Activating feature 'android-sdk'"
+echo "The chosen android SDK platform is: ${PLATFORM}"
 
 # Clean up
 rm -rf /var/lib/apt/lists/*
@@ -64,7 +64,7 @@ check_packages() {
 export DEBIAN_FRONTEND=noninteractive
 
 # Install flutter dependencies
-check_packages git ca-certificates curl libglu1-mesa zip unzip xz-utils
+check_packages unzip openjdk-11-jre
 
 
 # Installing flutter into /opt
@@ -74,22 +74,38 @@ fi
 cd /opt
 chmod a+rwX /opt
 
+# installing latest command line tools
+wget -nv https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
+unzip -q commandlinetools-linux-9477386_latest.zip -d /tmp
+
+
 # failsafe if channel is not set, we use stable channel
-if [ "${CHANNEL}" = "" ]; then
-    CHANNEL=stable
+if [ "${PLATFORM}" = "" ]; then
+    PLATFORM="33"
 fi
 
-# cloning as user to avoid permission issues when updating flutter and installing dependencies
-echo "Cloning flutter with channel $CHANNEL"
-su ${USERNAME} -c "git clone --branch $CHANNEL https://github.com/flutter/flutter.git"
-su ${USERNAME} -c "/opt/flutter/bin/flutter doctor"
+# regex which should find the last occurence: build-tools;33[^\s\t]+(?![\s\S]*build-tools;33)
+# the "'!'" syntax is necessary because ! is not valid in a "" string but variables are not resolved in a '' string
+# TODO: check for RC and make user choose via variable if they want to use rc versions
+PLATFORM_REGEX="build-tools;$PLATFORM[^\s\t]+(?"'!'"[\s\S]*build-tools;$PLATFORM)"
+BUILD_TOOLS=`/tmp/cmdline-tools/bin/sdkmanager --list --sdk_root=/opt/android-sdk/ | grep -Po $PLATFORM_REGEX | tail -1`
 
+# installing sdk and accepting all licenses
+yes | /tmp/cmdline-tools/bin/sdkmanager --sdk_root=/opt/android-sdk/ "platform-tools" "platforms;android-$PLATFORM" "$BUILD_TOOLS" "cmdline-tools;latest"
+yes | /opt/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses --sdk_root=/opt/android-sdk/
+
+# clean up
+rm -rf *.zip /tmp/cmdline-tools
 
 # Add FLUTTER_HOME and bin directory into bashrc/zshrc files (unless disabled)
-echo "Adding flutter to PATH"
+echo "Adding android sdk to PATH"
 updaterc "$(cat << EOF
-export FLUTTER_HOME=/opt/flutter
-if [[ "\${PATH}" != *"\${FLUTTER_HOME}/bin"* ]]; then export PATH="\${FLUTTER_HOME}/bin:\${PATH}"; fi
+export ANDROID_HOME=/opt/android-sdk/
+export ANDROID_PLATFORM=${PLATFORM}
+if [[ "\${PATH}" != *"\${ANDROID_HOME}/cmdline-tools/latest/bin"* ]]; then export PATH="\${ANDROID_HOME}/cmdline-tools/latest/bin:\${PATH}"; fi
+if [[ "\${PATH}" != *"\${ANDROID_HOME}/tools/bin"* ]]; then export PATH="\${ANDROID_HOME}/tools/bin:\${PATH}"; fi
+if [[ "\${PATH}" != *"\${ANDROID_HOME}/tools"* ]]; then export PATH="\${ANDROID_HOME}/tools:\${PATH}"; fi
+if [[ "\${PATH}" != *"\${ANDROID_HOME}/platform-tools"* ]]; then export PATH="\${ANDROID_HOME}/platform-tools:\${PATH}"; fi
 EOF
 )"
 

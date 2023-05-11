@@ -1,0 +1,16 @@
+{
+    "name": "Android SDK",
+    "id": "android-sdk",
+    "version": "1.0.0",
+    "description": "Android SDK",
+    "options": {
+        "platform": {
+            "type": "string",
+            "default": "33",
+            "description": "The SDK platform version. Value is directly passed to sdkmanager. So modify at your own risk."
+        }
+    },
+    "installsAfter": [
+        "ghcr.io/devcontainers/features/common-utils"
+    ]
+}
