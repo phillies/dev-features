@@ -82,8 +82,6 @@ fi
 # cloning as user to avoid permission issues when updating flutter and installing dependencies
 echo "Cloning flutter with channel $CHANNEL"
 su ${USERNAME} -c "git clone --branch $CHANNEL https://github.com/flutter/flutter.git"
-su ${USERNAME} -c "/opt/flutter/bin/flutter doctor"
-
 
 # Add FLUTTER_HOME and bin directory into bashrc/zshrc files (unless disabled)
 echo "Adding flutter to PATH"
@@ -92,6 +90,10 @@ export FLUTTER_HOME=/opt/flutter
 if [[ "\${PATH}" != *"\${FLUTTER_HOME}/bin"* ]]; then export PATH="\${FLUTTER_HOME}/bin:\${PATH}"; fi
 EOF
 )"
+
+# Checking installation - using login shell (-l) so bash profile is loaded and flutter path is set
+su ${USERNAME} -l -c "flutter doctor"
+
 
 # Clean up
 rm -rf /var/lib/apt/lists/*
