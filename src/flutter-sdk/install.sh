@@ -3,12 +3,13 @@
 # Checking if remote user is set, otherwise use "automatic" user
 USERNAME="${USERNAME:-"${_REMOTE_USER:-"automatic"}"}"
 UPDATE_RC="true"
-FLUTTER_HOME=/opt/flutter
+FLUTTER_HOME="/opt/flutter"
 
 set -e
 
 echo "Activating feature 'flutter-sdk'"
 echo "The chosen flutter SDK channel is: ${CHANNEL}"
+echo "FLUTTER_HOME is ${FLUTTER_HOME}"
 
 # Clean up
 rm -rf /var/lib/apt/lists/*
@@ -92,17 +93,14 @@ su ${USERNAME} -c "git clone --branch $CHANNEL https://github.com/flutter/flutte
 # Add FLUTTER_HOME and bin directory into bashrc/zshrc files (unless disabled)
 echo "Adding flutter to PATH"
 updaterc "$(cat << EOF
-export FLUTTER_HOME=/opt/flutter
+export FLUTTER_HOME=${FLUTTER_HOME}
 if [[ "\${PATH}" != *"\${FLUTTER_HOME}/bin"* ]]; then export PATH="\${FLUTTER_HOME}/bin:\${PATH}"; fi
 EOF
 )"
 
-# DEBUG
-cat /etc/bash.bashrc
-
 # Checking installation - using login shell (-l) so bash profile is loaded and flutter path is set
 echo "Running analysis on flutter installation"
-su ${USERNAME} -l -c "\${FLUTTER_HOME}/bin/flutter doctor"
+su ${USERNAME} -l -c "${FLUTTER_HOME}/bin/flutter doctor"
 
 
 # Clean up

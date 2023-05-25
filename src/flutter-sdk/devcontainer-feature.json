@@ -1,7 +1,7 @@
 {
     "name": "Flutter SDK",
     "id": "flutter-sdk",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "The flutter and dart sdk.",
     "options": {
         "channel": {
@@ -11,6 +11,7 @@
         }
     },
     "installsAfter": [
-        "ghcr.io/devcontainers/features/common-utils"
+        "ghcr.io/devcontainers/features/common-utils",
+        "ghcr.io/phillies/dev-features/android-sdk"
     ]
 }
