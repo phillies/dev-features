@@ -3,10 +3,11 @@
 # Checking if remote user is set, otherwise use "automatic" user
 USERNAME="${USERNAME:-"${_REMOTE_USER:-"automatic"}"}"
 UPDATE_RC="true"
+VERSION=$(<VERSION)
 
 set -e
 
-echo "Activating feature 'flutter-sdk'"
+echo "Activating feature 'flutter-sdk' version ${VERSION}"
 echo "The chosen flutter SDK channel is: ${CHANNEL}"
 
 # Clean up
@@ -92,6 +93,7 @@ EOF
 )"
 
 # Checking installation - using login shell (-l) so bash profile is loaded and flutter path is set
+echo "Running analysis on flutter installation"
 su ${USERNAME} -l -c "flutter doctor"
 
 
