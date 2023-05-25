@@ -1,7 +1,7 @@
 {
     "name": "Flutter SDK",
     "id": "flutter-sdk",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "The flutter and dart sdk.",
     "options": {
         "channel": {
