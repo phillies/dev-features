@@ -35,11 +35,11 @@ fi
 updaterc() {
     if [ "${UPDATE_RC}" = "true" ]; then
         echo "Updating /etc/bash.bashrc and /etc/zsh/zshrc..."
-        if [[ "$(cat /etc/bash.bashrc)" != *"$1"* ]]; then
+        if [ -f "/etc/bash.bashrc" ] && [[ "$(cat /etc/bash.bashrc)" != *"$1"* ]]; then
             echo -e "$1" >> /etc/bash.bashrc
             echo "/etc/bash.bashrc updated"
         fi
-        if [[ "$(cat /etc/bash/bashrc)" != *"$1"* ]]; then
+        if [ -f "/etc/bash/bashrc" ] && [[ "$(cat /etc/bash/bashrc)" != *"$1"* ]]; then
             echo -e "$1" >> /etc/bash/bashrc
             echo "/etc/bash/bashrc updated"
         fi        
@@ -72,7 +72,6 @@ export DEBIAN_FRONTEND=noninteractive
 # Install flutter dependencies
 check_packages git ca-certificates curl libglu1-mesa zip unzip xz-utils
 
-
 # Installing flutter into /opt
 if [ ! -d "/opt/" ]; then
     mkdir /opt
@@ -97,9 +96,12 @@ if [[ "\${PATH}" != *"\${FLUTTER_HOME}/bin"* ]]; then export PATH="\${FLUTTER_HO
 EOF
 )"
 
+# DEBUG
+cat /etc/bash.bashrc
+
 # Checking installation - using login shell (-l) so bash profile is loaded and flutter path is set
 echo "Running analysis on flutter installation"
-su ${USERNAME} -l -c "flutter doctor"
+su ${USERNAME} -l -c "\${FLUTTER_HOME}/bin/flutter doctor"
 
 
 # Clean up
