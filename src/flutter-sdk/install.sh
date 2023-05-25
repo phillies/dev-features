@@ -3,11 +3,10 @@
 # Checking if remote user is set, otherwise use "automatic" user
 USERNAME="${USERNAME:-"${_REMOTE_USER:-"automatic"}"}"
 UPDATE_RC="true"
-VERSION=$(<VERSION)
 
 set -e
 
-echo "Activating feature 'flutter-sdk' version ${VERSION}"
+echo "Activating feature 'flutter-sdk'"
 echo "The chosen flutter SDK channel is: ${CHANNEL}"
 
 # Clean up
@@ -38,9 +37,15 @@ updaterc() {
         echo "Updating /etc/bash.bashrc and /etc/zsh/zshrc..."
         if [[ "$(cat /etc/bash.bashrc)" != *"$1"* ]]; then
             echo -e "$1" >> /etc/bash.bashrc
+            echo "/etc/bash.bashrc updated"
         fi
+        if [[ "$(cat /etc/bash/bashrc)" != *"$1"* ]]; then
+            echo -e "$1" >> /etc/bash/bashrc
+            echo "/etc/bash/bashrc updated"
+        fi        
         if [ -f "/etc/zsh/zshrc" ] && [[ "$(cat /etc/zsh/zshrc)" != *"$1"* ]]; then
             echo -e "$1" >> /etc/zsh/zshrc
+            echo "/etc/zsh/zshrc updated"
         fi
     fi
 }
