@@ -92,6 +92,7 @@ EOF
 )"
 
 # Checking installation - using login shell (-l) so bash profile is loaded and flutter path is set
+echo "verifying flutter installation"
 su ${USERNAME} -l -c "flutter doctor"
 
 
