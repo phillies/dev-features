@@ -1,0 +1,12 @@
+{
+    "name": "Flutter linux toolchain",
+    "id": "flutter-linux",
+    "version": "1.0.0",
+    "description": "The linux toolchain for flutter sdk.",
+    "options": {
+
+    },
+    "installsAfter": [
+        "ghcr.io/devcontainers/features/common-utils"
+    ]
+}

@@ -72,31 +72,7 @@ check_packages() {
 export DEBIAN_FRONTEND=noninteractive
 
 # Install flutter dependencies
-check_packages git ca-certificates curl libglu1-mesa zip unzip xz-utils
-
-# Installing flutter into /opt
-if [ ! -d "/opt/" ]; then
-    mkdir /opt
-fi
-cd /opt
-chmod a+rwX /opt
-
-# failsafe if channel is not set, we use stable channel
-if [ "${CHANNEL}" = "" ]; then
-    CHANNEL=stable
-fi
-
-# cloning as user to avoid permission issues when updating flutter and installing dependencies
-echo "Cloning flutter with channel $CHANNEL"
-su ${USERNAME} -c "git clone --branch $CHANNEL https://github.com/flutter/flutter.git"
-
-# Add FLUTTER_HOME and bin directory into bashrc/zshrc files (unless disabled)
-echo "Adding flutter to PATH"
-updaterc "$(cat << EOF
-export FLUTTER_HOME=${FLUTTER_HOME}
-if [[ "\${PATH}" != *"\${FLUTTER_HOME}/bin"* ]]; then export PATH="\${FLUTTER_HOME}/bin:\${PATH}"; fi
-EOF
-)"
+check_packages clang cmake ninja-build libgtk-3-dev
 
 # Checking installation
 echo "Running analysis on flutter installation"
