@@ -74,11 +74,6 @@ export DEBIAN_FRONTEND=noninteractive
 # Install flutter dependencies
 check_packages clang cmake ninja-build libgtk-3-dev
 
-# Checking installation
-echo "Running analysis on flutter installation"
-su ${USERNAME} -l -c "${FLUTTER_HOME}/bin/flutter doctor"
-
-
 # Clean up
 rm -rf /var/lib/apt/lists/*
 
